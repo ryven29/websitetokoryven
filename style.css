@@ -840,6 +840,18 @@ footer h3 {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .cta-buttons {
+        gap: 12px;
+    }
+    
+    .cta-primary,
+    .cta-whatsapp {
+        padding: 16px 18px;
+        font-size: 15px;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
@@ -906,16 +918,28 @@ footer h3 {
     }
     
     .cta-buttons {
-        justify-content: center;
+        display: flex;
         flex-direction: column;
-        align-items: center;
+        gap: 15px;
+        width: 100%;
     }
     
     .cta-primary,
     .cta-whatsapp {
         width: 100%;
-        max-width: 300px;
         text-align: center;
+        padding: 18px 20px;
+        font-size: 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .cta-primary:active,
+    .cta-whatsapp:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
     
     .product-display {
@@ -1005,5 +1029,39 @@ footer h3 {
     
     .social-links {
         justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-buttons {
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .cta-primary,
+    .cta-whatsapp {
+        padding: 16px 15px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+    
+    .description-content h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+    
+    .description-text {
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+    
+    .features {
+        gap: 8px;
+        margin-bottom: 25px;
+    }
+    
+    .feature-item {
+        padding: 12px;
+        font-size: 0.9em;
     }
 }
