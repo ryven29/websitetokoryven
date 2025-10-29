@@ -20,8 +20,8 @@ body {
 
 /* Header */
 header {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-    color: white;
+    background: linear-gradient(135deg, #D4A574 0%, #C49B7B 100%);
+    color: #5D4037;
     padding: 15px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -50,7 +50,8 @@ header {
 .brand-info h1 {
     font-size: 1.8em;
     margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    color: #5D4037;
 }
 
 .brand-info .tagline {
@@ -68,7 +69,7 @@ header {
 }
 
 .nav-link {
-    color: white;
+    color: #5D4037;
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1em;
@@ -79,8 +80,9 @@ header {
 
 .nav-link:hover,
 .nav-link.active {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(93, 64, 55, 0.1);
     transform: translateY(-2px);
+    color: #3E2723;
 }
 
 /* Hero Section */
@@ -173,7 +175,7 @@ image.png/* Hero Description */
 
 .description-content h2 {
     font-size: 2.5em;
-    color: #ff6b6b;
+    color: #8D6E63;
     margin-bottom: 20px;
     line-height: 1.2;
 }
@@ -212,6 +214,21 @@ image.png/* Hero Description */
     font-size: 1.5em;
 }
 
+/* Custom emoji image in features */
+.emoji-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* Slightly larger emoji when used inside section titles */
+.category h2 .emoji-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+}
+
 .cta-buttons {
     display: flex;
     gap: 20px;
@@ -219,7 +236,7 @@ image.png/* Hero Description */
 }
 
 .cta-primary {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
     color: white;
     border: none;
     padding: 15px 30px;
@@ -228,12 +245,12 @@ image.png/* Hero Description */
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 15px rgba(141, 110, 99, 0.3);
 }
 
 .cta-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 6px 20px rgba(141, 110, 99, 0.4);
 }
 
 .cta-whatsapp {
@@ -287,7 +304,7 @@ image.png/* Hero Description */
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
     color: white;
     width: 60px;
     height: 60px;
@@ -297,14 +314,14 @@ image.png/* Hero Description */
     justify-content: center;
     font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 4px 15px rgba(141, 110, 99, 0.4);
     z-index: 1000;
     transition: all 0.3s;
 }
 
 .cart-float:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    box-shadow: 0 6px 20px rgba(141, 110, 99, 0.6);
 }
 
 #cart-count {
@@ -336,17 +353,17 @@ image.png/* Hero Description */
 .category h2 {
     font-size: 2em;
     margin-bottom: 20px;
-    color: #ff6b6b;
-    border-left: 5px solid #ff6b6b;
+    color: #8D6E63;
+    border-left: 5px solid #8D6E63;
     padding-left: 15px;
 }
 
 .category-description {
-    background: #f8f9fa;
+    background: #F5F5DC;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 30px;
-    border-left: 4px solid #ff6b6b;
+    border-left: 4px solid #8D6E63;
 }
 
 .category-description p {
@@ -385,7 +402,7 @@ image.png/* Hero Description */
 
 .product-details h3 {
     font-size: 2em;
-    color: #ff6b6b;
+    color: #8D6E63;
     margin-bottom: 10px;
 }
 
@@ -402,7 +419,7 @@ image.png/* Hero Description */
 
 .price {
     font-size: 2.5em;
-    color: #ff6b6b;
+    color: #8D6E63;
     font-weight: bold;
 }
 
@@ -420,7 +437,7 @@ image.png/* Hero Description */
     gap: 10px;
 }
 .qty-btn {
-    background: #ff6b6b;
+    background: #8D6E63;
     color: white;
     border: none;
     width: 36px;
@@ -465,18 +482,18 @@ image.png/* Hero Description */
 }
 
 .variant-btn:hover {
-    border-color: #ff6b6b;
-    color: #ff6b6b;
+    border-color: #8D6E63;
+    color: #8D6E63;
 }
 
 .variant-btn.active {
-    background: #ff6b6b;
-    border-color: #ff6b6b;
+    background: #8D6E63;
+    border-color: #8D6E63;
     color: white;
 }
 
 .add-to-cart-btn {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
     color: white;
     border: none;
     padding: 15px 30px;
@@ -485,14 +502,14 @@ image.png/* Hero Description */
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 15px rgba(141, 110, 99, 0.3);
     width: 100%;
     margin-top: 20px;
 }
 
 .add-to-cart-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 6px 20px rgba(141, 110, 99, 0.4);
 }
 
 .add-to-cart-btn span {
@@ -669,7 +686,7 @@ image.png/* Hero Description */
 
 .cart-item-info p {
     margin: 0;
-    color: #ff6b6b;
+    color: #8D6E63;
     font-weight: bold;
 }
 
@@ -680,7 +697,7 @@ image.png/* Hero Description */
 }
 
 .cart-item-controls button {
-    background: #ff6b6b;
+    background: #8D6E63;
     color: white;
     border: none;
     width: 30px;
@@ -692,7 +709,7 @@ image.png/* Hero Description */
 }
 
 .cart-item-controls button:hover {
-    background: #e74c3c;
+    background: #6D4C41;
     transform: scale(1.1);
 }
 
@@ -708,7 +725,7 @@ image.png/* Hero Description */
 .cart-total {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 2px solid #ff6b6b;
+    border-top: 2px solid #8D6E63;
     text-align: center;
 }
 
@@ -749,11 +766,11 @@ image.png/* Hero Description */
     position: fixed;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
     color: white;
     padding: 15px 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 4px 15px rgba(141, 110, 99, 0.3);
     z-index: 3000;
     transform: translateX(100%);
     transition: transform 0.3s;
@@ -775,7 +792,7 @@ footer h3 {
     font-size: 2em;
     margin-bottom: 30px;
     text-align: center;
-    color: #ff6b6b;
+    color: #D4A574;
 }
 
 .footer-content {
@@ -788,8 +805,8 @@ footer h3 {
 .footer-section h4 {
     font-size: 1.3em;
     margin-bottom: 15px;
-    color: #ff6b6b;
-    border-bottom: 2px solid #ff6b6b;
+    color: #D4A574;
+    border-bottom: 2px solid #D4A574;
     padding-bottom: 5px;
 }
 
