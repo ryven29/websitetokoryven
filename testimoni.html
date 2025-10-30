@@ -20,10 +20,10 @@
                 </div>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="index.html#home" class="nav-link">Home</a></li>
-                        <li><a href="index.html#produk" class="nav-link">Produk</a></li>
-                        <li><a href="testimoni.html" class="nav-link active">Testimoni</a></li>
-                        <li><a href="index.html#hubungi" class="nav-link">Hubungi Kami</a></li>
+                        <li><a href="/#home" class="nav-link">Home</a></li>
+                        <li><a href="/#produk" class="nav-link">Produk</a></li>
+                        <li><a href="/testimoni" class="nav-link active">Testimoni</a></li>
+                        <li><a href="/#hubungi" class="nav-link">Hubungi Kami</a></li>
                     </ul>
                 </nav>
             </div>
@@ -136,15 +136,15 @@
         function requireAuth() {
             const userStr = localStorage.getItem('authUser');
             if (!userStr) {
-                sessionStorage.setItem('nextAfterLogin', 'testimoni.html');
-                window.location.href = 'login.html';
+                sessionStorage.setItem('nextAfterLogin', '/testimoni');
+                window.location.href = '/login';
                 return null;
             }
             try {
                 return JSON.parse(userStr);
             } catch (e) {
                 localStorage.removeItem('authUser');
-                window.location.href = 'login.html';
+                window.location.href = '/login';
                 return null;
             }
         }
@@ -249,7 +249,7 @@
 
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('authUser');
-                window.location.href = 'login.html';
+                window.location.href = '/login';
             });
         });
     </script>

@@ -21,10 +21,10 @@
                 </div>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="index.html#home" class="nav-link">Home</a></li>
-                        <li><a href="index.html#produk" class="nav-link">Produk</a></li>
-                        <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
-                        <li><a href="index.html#hubungi" class="nav-link">Hubungi Kami</a></li>
+                        <li><a href="/#home" class="nav-link">Home</a></li>
+                        <li><a href="/#produk" class="nav-link">Produk</a></li>
+                        <li><a href="/login?next=/testimoni" class="nav-link">Testimoni</a></li>
+                        <li><a href="/#hubungi" class="nav-link">Hubungi Kami</a></li>
                     </ul>
                 </nav>
             </div>
@@ -128,7 +128,7 @@
                 picture: payload.picture || ''
             };
             localStorage.setItem('authUser', JSON.stringify(user));
-            const next = sessionStorage.getItem('nextAfterLogin') || 'testimoni.html';
+            const next = sessionStorage.getItem('nextAfterLogin') || '/testimoni';
             sessionStorage.removeItem('nextAfterLogin');
             window.location.href = next;
         }
@@ -142,7 +142,7 @@
             }
             const existing = localStorage.getItem('authUser');
             if (existing) {
-                const next = sessionStorage.getItem('nextAfterLogin') || 'testimoni.html';
+                const next = sessionStorage.getItem('nextAfterLogin') || '/testimoni';
                 sessionStorage.removeItem('nextAfterLogin');
                 window.location.href = next;
             }
