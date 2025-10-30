@@ -22,6 +22,7 @@
                     <ul>
                         <li><a href="#home" class="nav-link active">Home</a></li>
                         <li><a href="#produk" class="nav-link">Produk</a></li>
+                        <li><a href="login.html?next=testimoni.html" class="nav-link">Testimoni</a></li>
                         <li><a href="#hubungi" class="nav-link">Hubungi Kami</a></li>
                     </ul>
                 </nav>
@@ -595,23 +596,21 @@
             addToCart(productName, selectedPrice, qty);
         }
 
-        // Smooth scrolling for navigation links
+        // Smooth scrolling for internal hash links only
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const href = this.getAttribute('href') || '';
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
                 }
-                
-                // Update active nav link
-                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
             });
         });
 
