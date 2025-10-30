@@ -15,7 +15,7 @@
                     <img src="image/logo.png" alt="Logo Kripik Usus Kyt@" class="logo">
                     <div class="brand-info">
                         <h1>Kedai Kyt@</h1>
-                        <p class="tagline">Rasa Nikmat, Harga Bersahabat.</p>
+                        <p class="tagline">Rasa Nikmat, Harga Berkualitas</p>
                     </div>
                 </div>
                 <nav class="main-nav">
@@ -91,7 +91,7 @@
                     <div class="description-content">
                         <h2>Selamat Datang di Kedai Kyt@ 👋</h2>
                         <p class="description-text">
-                            Kedai Kyta adalah tempat terbaik untuk menemukan jajanan lezat dan berkualitas
+                            Kedai Kyta adalah tempat terbaik untuk menemukan jajanan lezat dan berkualitas tinggi.
                             Kami menyediakan berbagai macam produk, salah satunya dalam memproduksi kripik usus berkualitas tinggi dengan berbagai varian rasa 
                             yang menggugah selera. Setiap gigitan memberikan sensasi renyah yang memuaskan dan rasa yang autentik.
                         </p>
@@ -143,8 +143,9 @@
             
             <!-- Product Display -->
             <div class="product-display">
+                <!-- Product Image -->
                 <div class="product-image">
-                    <img id="product-image" src="image/Kripik Usus/Original/or1.webp" alt="Kripik Usus">
+                    <img id="product-image" src="image/Kripik Usus/Original/or1.webp" alt="Kripik Usus" onerror="this.src='image/Kripik Usus/IMG-20251019-WA0012.jpg'">
                 </div>
                 
                 <div class="product-details">
@@ -330,6 +331,83 @@
 
         // Cart Functions
 
+        // Mapping flavor to their image paths
+        const flavorImages = {
+            'original': ['image/Kripik Usus/Original/or1.webp', 'image/Kripik Usus/Original/or2.webp'],
+            'pedas-cabe': ['image/Kripik Usus/Pedas Cabe-Cabean/pcc1.webp', 'image/Kripik Usus/Pedas Cabe-Cabean/pcc2.webp', 'image/Kripik Usus/Pedas Cabe-Cabean/pcc3.webp'],
+            'pedas-daun-jeruk': ['image/Kripik Usus/Pedas Daun jeruk/pdj1.webp', 'image/Kripik Usus/Pedas Daun jeruk/pdj2.webp'],
+            'asin-daun-jeruk': ['image/Kripik Usus/Asin Daun Jeruk/adj1.webp', 'image/Kripik Usus/Asin Daun Jeruk/adj2.webp']
+        };
+
+        // Product slider variables
+        let productCurrentSlide = 0;
+        let productSlideInterval;
+
+        // Initialize product slider
+        function initializeProductSlider(flavor) {
+            const slider = document.querySelector('.product-slider');
+            const dots = document.querySelector('.product-dots');
+            const images = flavorImages[flavor];
+            
+            // Clear existing content
+            slider.innerHTML = '';
+            dots.innerHTML = '';
+            
+            // Add slides
+            images.forEach((image, index) => {
+                const slide = document.createElement('div');
+                slide.className = `product-slide ${index === 0 ? 'active' : ''}`;
+                slide.innerHTML = `<img src="${image}" alt="Kripik Usus ${flavorNames[flavor]}">`;
+                slider.appendChild(slide);
+                
+                // Add dot
+                const dot = document.createElement('span');
+                dot.className = `product-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToProductSlide(index);
+                dots.appendChild(dot);
+            });
+            
+            // Reset slide position
+            productCurrentSlide = 0;
+            
+            // Clear existing interval and start new one if multiple images
+            if (productSlideInterval) clearInterval(productSlideInterval);
+            if (images.length > 1) {
+                productSlideInterval = setInterval(() => changeProductSlide(1), 3000);
+            }
+        }
+
+        function changeProductSlide(n) {
+            const slides = document.querySelectorAll('.product-slide');
+            const dots = document.querySelectorAll('.product-dot');
+            
+            if (!slides.length) return;
+            
+            slides[productCurrentSlide].classList.remove('active');
+            dots[productCurrentSlide].classList.remove('active');
+            
+            productCurrentSlide = (productCurrentSlide + n + slides.length) % slides.length;
+            
+            slides[productCurrentSlide].classList.add('active');
+            dots[productCurrentSlide].classList.add('active');
+        }
+
+        function goToProductSlide(n) {
+            const slides = document.querySelectorAll('.product-slide');
+            const dots = document.querySelectorAll('.product-dot');
+            
+            if (!slides.length) return;
+            
+            slides[productCurrentSlide].classList.remove('active');
+            dots[productCurrentSlide].classList.remove('active');
+            
+            productCurrentSlide = n;
+            
+            slides[productCurrentSlide].classList.add('active');
+            dots[productCurrentSlide].classList.add('active');
+        }
+
+        // Cart Functions
         function addToCart(name, price, qty = 1) {
             const existingItem = cart.find(item => item.name === name);
 
@@ -477,8 +555,7 @@
                 this.classList.add('active');
                 
                 selectedFlavor = this.dataset.flavor;
-                const imagePath = this.dataset.image;
-                updateProductImage(imagePath);
+                initializeProductSlider(selectedFlavor); // Initialize slider for selected flavor
                 updateProductName();
             });
         });
@@ -488,7 +565,10 @@
         }
 
         function updateProductImage(imagePath) {
-            document.getElementById('product-image').src = imagePath;
+            const productImage = document.getElementById('product-image');
+            if (productImage) {
+                productImage.src = imagePath;
+            }
         }
 
         function updateProductName() {
@@ -535,10 +615,11 @@
             });
         });
 
-        // Initialize cart on page load
+        // Initialize cart and product slider on page load
         document.addEventListener('DOMContentLoaded', function() {
             updateCart();
             initializeSliders();
+            initializeProductSlider('original'); // Initialize with default flavor
         });
 
         // Close modal when clicking outside
