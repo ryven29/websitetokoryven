@@ -9,6 +9,17 @@
 </head>
 
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <img src="image/logo.png" alt="Logo Kripik Usus Kyt@" class="loading-logo">
+            <h2 class="loading-text">Tunggu Sebentar...</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p class="loading-percentage" id="loading-percentage">0%</p>
+        </div>
+    </div>
     <!-- Header -->
     <header>
         <div class="container">
@@ -17,7 +28,7 @@
                     <img src="image/logo.png" alt="Logo Kripik Usus Kyt@" class="logo">
                     <div class="brand-info">
                         <h1>Kedai Kyt@</h1>
-                        <p class="tagline">Rasa Nikmat, Harga Berkualitas</p>
+                        <p class="tagline">A Place for All of Us</p>
                     </div>
                 </div>
                 <nav class="main-nav">
@@ -105,7 +116,7 @@
                     <div class="description-content">
                         <h2>Selamat Datang di Kedai Kyt@ 👋</h2>
                         <p class="description-text">
-                            Kedai Kyta adalah tempat ---
+                            Kedai Kyta adalah tempat untuk menemukan jajanan yang berkualitas.
                         </p>
                         <div class="features">
                             <div class="feature-item">
@@ -286,6 +297,46 @@
     </footer>
 
     <script>
+        // Loading Screen Logic
+        document.addEventListener('DOMContentLoaded', function () {
+            const loadingScreen = document.getElementById('loading-screen');
+            const progressBar = document.getElementById('progress-bar');
+            const percentageText = document.getElementById('loading-percentage');
+            let width = 0;
+
+            // Simulate loading progress
+            const interval = setInterval(function () {
+                // Random increment for more realistic feel
+                const increment = Math.floor(Math.random() * 5) + 1;
+                width += increment;
+
+                if (width >= 100) {
+                    width = 100;
+                    clearInterval(interval);
+
+                    // Ensure everything is loaded before hiding
+                    window.onload = function () {
+                        setTimeout(hideLoadingScreen, 500);
+                    };
+
+                    // Fallback if window.onload already fired
+                    if (document.readyState === 'complete') {
+                        setTimeout(hideLoadingScreen, 500);
+                    }
+                }
+
+                progressBar.style.width = width + '%';
+                percentageText.textContent = width + '%';
+            }, 50); // Adjust speed here
+
+            function hideLoadingScreen() {
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500); // Wait for transition to finish
+            }
+        });
+
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let currentSlide = 0;
         let categorySliders = {};
