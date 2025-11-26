@@ -699,7 +699,7 @@
 
             // Create icon element
             const icon = document.createElement('img');
-            icon.src = 'image/tickgreen.png';
+            icon.src = 'image/gif/order.gif';
             icon.alt = 'Success';
             icon.className = 'notification-icon';
 
@@ -722,6 +722,37 @@
                 setTimeout(() => notification.remove(), 300);
             }, 2000);
         }
+
+        function showNotificationError(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+
+            // Create icon element
+            const icon = document.createElement('img');
+            icon.src = 'image/gif/declined.gif';
+            icon.alt = 'Error';
+            icon.className = 'notification-icon';
+
+            // Create text element
+            const text = document.createElement('span');
+            text.textContent = message;
+
+            // Append icon and text to notification
+            notification.appendChild(icon);
+            notification.appendChild(text);
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
 
         // Quantity controls for product page
         function changeQuantity(delta) {
@@ -970,7 +1001,7 @@
             const customerName = nameInput ? nameInput.value.trim() : '';
 
             if (!customerName) {
-                alert('Mohon masukkan nama Anda terlebih dahulu!');
+                showNotificationError('Mohon masukkan nama Anda terlebih dahulu!');
                 nameInput.focus();
                 return;
             }

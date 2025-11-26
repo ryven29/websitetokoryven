@@ -640,7 +640,21 @@
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'notification';
-            notification.textContent = message;
+
+            // Create icon element
+            const icon = document.createElement('img');
+            icon.src = '../image/gif/tick.gif';
+            icon.alt = 'Success';
+            icon.className = 'notification-icon';
+
+            // Create text element
+            const text = document.createElement('span');
+            text.textContent = message;
+
+            // Append icon and text to notification
+            notification.appendChild(icon);
+            notification.appendChild(text);
+
             document.body.appendChild(notification);
 
             setTimeout(() => {
