@@ -70,13 +70,22 @@
                             <img src="image/Slides/id-11134207-7rbk6-m6bzrdw2dndkc3.webp" alt="KP3">
                         </div>
                         <div class="slide">
-                            <img src="image/Slides/id-11134207-7rbk9-m6bzrdw26mkz0f.webp" alt="KP4">
+                            <img src="image/Slides/IMG-20251019-WA0019.jpg" alt="B">
                         </div>
                         <div class="slide">
-                            <img src="image/Slides/id-11134207-7rbke-m6bzrdw2c8t445.webp" alt="KP5">
+                            <img src="image/Slides/IMG-20251019-WA0016.jpg" alt="KP6">
                         </div>
                         <div class="slide">
-                            <img src="image/Slides/id-11134207-7rbkd-m6bzrdw2au8o9e.webp" alt="KP6">
+                            <img src="image/Slides/IMG-20251019-WA0006.jpg" alt="KP6">
+                        </div>
+                        <div class="slide">
+                            <img src="image/Slides/IMG-20251019-WA0005.jpg" alt="KP6">
+                        </div>
+                        <div class="slide">
+                            <img src="image/Slides/IMG-20251019-WA0011.jpg" alt="KP6">
+                        </div>
+                        <div class="slide">
+                            <img src="image/Slides/IMG-20251019-WA0002.jpg" alt="KP6">
                         </div>
                         <button class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
                         <button class="slider-btn next" onclick="changeSlide(1)">❯</button>
@@ -91,7 +100,8 @@
                     <div class="description-content">
                         <h2>Selamat Datang di Kedai Kyt@ 👋</h2>
                         <p class="description-text">
-                            Kedai Kyta adalah tempat untuk menemukan jajanan yang berkualitas.
+                            Kedai KYT@ berdiri sejak tahun 2024 sebagai usaha rumahan yang menjual berbagai camilan
+                            seperti keripik usus, kue basah, kue kering, bolu, dan lain-lain.
                         </p>
                         <div class="features">
                             <div class="feature-item">
@@ -117,7 +127,7 @@
                                 Lihat Produk
                             </button>
                             <a href="https://wa.me/6285654805329" target="_blank" class="cta-whatsapp">
-                                <span>📱</span> Pesan via WhatsApp
+                                <img src="image/svg/WA.png" alt="WhatsApp" class="btn-icon"> Pesan via WhatsApp
                             </a>
                         </div>
                     </div>
@@ -154,6 +164,143 @@
                     <div class="product-nav-arrows">
                         <button class="product-nav-btn prev-products" onclick="changeProductSlide(-1)">❮</button>
                         <button class="product-nav-btn next-products" onclick="changeProductSlide(1)">❯</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produk Lainnya -->
+        <section class="other-products-section">
+            <div class="recommended-content">
+                <!-- Left Section: Title and Description -->
+                <div class="recommended-info">
+                    <h2 class="recommended-title">PRODUK LAINNYA</h2>
+                </div>
+
+                <!-- Right Section: Product Cards -->
+                <div class="recommended-products">
+                    <div class="products-container" id="other-products-container">
+                        <!-- Bolu -->
+                        <div class="product-card">
+                            <div class="product-card-image">
+                                <div class="product-card-slider" id="slider-bolu">
+                                    <div class="product-card-slide active" style="opacity: 1">
+                                        <img src="image/Bolu/IMG-20251019-WA0001.jpg" alt="Bolu">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Bolu/IMG-20251019-WA0019.jpg" alt="Bolu">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card-info">
+                                <h3 class="product-card-name">Bolu</h3>
+                                <p class="product-card-price">Hubungi Kami</p>
+                                <button class="product-card-btn whatsapp-direct" onclick="orderViaWhatsApp('Bolu')">
+                                    <img src="image/svg/WA.png" alt="WhatsApp" class="btn-icon"> Pesan Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Donat -->
+                        <div class="product-card">
+                            <div class="product-card-image">
+                                <div class="product-card-slider" id="slider-donat">
+                                    <div class="product-card-slide active" style="opacity: 1">
+                                        <img src="image/Donat/IMG-20251019-WA0016.jpg" alt="Donat">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card-info">
+                                <h3 class="product-card-name">Donat</h3>
+                                <p class="product-card-price">Hubungi Kami</p>
+                                <button class="product-card-btn whatsapp-direct" onclick="orderViaWhatsApp('Donat')">
+                                    <img src="image/svg/WA.png" alt="WhatsApp" class="btn-icon"> Pesan Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Kue Basah -->
+                        <div class="product-card">
+                            <div class="product-card-image">
+                                <div class="product-card-slider" id="slider-kue-basah">
+                                    <div class="product-card-slide active" style="opacity: 1">
+                                        <img src="image/Kue Basah/IMG-20251019-WA0003.jpg" alt="Kue Basah">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Kue Basah/IMG-20251019-WA0008.jpg" alt="Kue Basah">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card-info">
+                                <h3 class="product-card-name">Kue Basah</h3>
+                                <p class="product-card-price">Hubungi Kami</p>
+                                <button class="product-card-btn whatsapp-direct"
+                                    onclick="orderViaWhatsApp('Kue Basah')">
+                                    <img src="image/svg/WA.png" alt="WhatsApp" class="btn-icon"> Pesan Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Kue Kering -->
+                        <div class="product-card">
+                            <div class="product-card-image">
+                                <div class="product-card-slider" id="slider-kue-kering">
+                                    <div class="product-card-slide active" style="opacity: 1">
+                                        <img src="image/Kue Kering/IMG-20251019-WA0002.jpg" alt="Kue Kering">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Kue Kering/IMG-20251019-WA0004.jpg" alt="Kue Kering">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Kue Kering/IMG-20251019-WA0005.jpg" alt="Kue Kering">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Kue Kering/IMG-20251019-WA0006.jpg" alt="Kue Kering">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card-info">
+                                <h3 class="product-card-name">Kue Kering</h3>
+                                <p class="product-card-price">Hubungi Kami</p>
+                                <button class="product-card-btn whatsapp-direct"
+                                    onclick="orderViaWhatsApp('Kue Kering')">
+                                    <img src="image/svg/WA.png" alt="WhatsApp" class="btn-icon"> Pesan Sekarang
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Roti -->
+                        <div class="product-card">
+                            <div class="product-card-image">
+                                <div class="product-card-slider" id="slider-roti">
+                                    <div class="product-card-slide active" style="opacity: 1">
+                                        <img src="image/Roti/IMG-20251019-WA0009.jpg" alt="Roti">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Roti/IMG-20251019-WA0010.jpg" alt="Roti">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Roti/IMG-20251019-WA0011.jpg" alt="Roti">
+                                    </div>
+                                    <div class="product-card-slide" style="opacity: 0">
+                                        <img src="image/Roti/IMG-20251019-WA0014.jpg" alt="Roti">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-card-info">
+                                <h3 class="product-card-name">Roti</h3>
+                                <p class="product-card-price">Hubungi Kami</p>
+                                <button class="product-card-btn whatsapp-direct" onclick="orderViaWhatsApp('Roti')">
+                                    <img src="image/svg/WA.png" alt="WhatsApp" class="btn-icon"> Pesan Sekarang
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-nav-arrows">
+                        <button class="product-nav-btn prev-other-products"
+                            onclick="changeOtherProductSlide(-1)">❮</button>
+                        <button class="product-nav-btn next-other-products"
+                            onclick="changeOtherProductSlide(1)">❯</button>
                     </div>
                 </div>
             </div>
@@ -245,29 +392,14 @@
                     <h4>🌐 Sosial Media</h4>
                     <div class="social-links">
                         <a href="https://wa.me/6285654805329" target="_blank" class="whatsapp-link" title="WhatsApp">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#25D366" />
-                                <path
-                                    d="M28.5 11.4C26.9 9.8 24.8 8.8 22.5 8.3C20.2 7.8 17.8 8 15.7 8.9C13.6 9.8 11.9 11.3 10.8 13.2C9.7 15.1 9.3 17.3 9.6 19.5C9.9 21.7 11 23.7 12.6 25.2L9 31L15 27.5C16.8 28.6 18.9 29.2 21 29.2C23.7 29.2 26.3 28.1 28.2 26.2C30.1 24.3 31.2 21.7 31.2 19C31.2 16.3 30.1 13.7 28.5 11.4ZM25.9 23.5C25.7 24.1 24.6 24.6 24.1 24.7C23.6 24.8 23.1 24.9 21.9 24.4C21.2 24.1 20.3 23.8 19.3 23.2C16.8 21.9 15.2 19.3 15.1 19.1C14.9 18.9 13.6 17.2 13.6 15.5C13.6 13.8 14.5 12.9 14.8 12.6C15.1 12.3 15.4 12.2 15.6 12.2C15.8 12.2 16 12.2 16.2 12.2C16.4 12.2 16.6 12.2 16.8 12.7C17 13.2 17.5 14.9 17.6 15C17.7 15.1 17.7 15.2 17.6 15.4C17.5 15.6 17.4 15.7 17.3 15.9C17.2 16.1 17 16.3 16.9 16.4C16.7 16.6 16.6 16.8 16.7 17C16.8 17.2 17.4 18.2 18.3 19C19.5 20.1 20.5 20.4 20.8 20.6C21.1 20.8 21.2 20.7 21.4 20.5C21.6 20.3 22.1 19.7 22.3 19.4C22.5 19.1 22.7 19.2 23 19.3C23.3 19.4 24.9 20.2 25.2 20.4C25.5 20.6 25.7 20.7 25.8 20.8C25.9 21 25.9 21.5 25.7 22.1Z"
-                                    fill="white" />
-                            </svg>
+                            <img src="image/svg/WA.png" alt="WhatsApp" width="40" height="40">
                         </a>
                         <a href="https://web.facebook.com/profile.php?id=61578310350627" target="_blank"
-                            class="facebook-link" title="Instagram">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#1877F2" />
-                                <path
-                                    d="M25.5 12.5H22.5C21.12 12.5 19.5 13.12 19.5 15.5V17.5H16.5V21H19.5V27.5H23V21H26L26.5 17.5H23V15.5C23 14.67 23.67 14 24.5 14H25.5V12.5Z"
-                                    fill="white" />
-                            </svg>
+                            class="facebook-link" title="Facebook">
+                            <img src="image/svg/FB.webp" alt="Facebook" width="40" height="40">
                         </a>
                         <a href="https://shopee.co.id/kedaikyta" target="_blank" class="shopee-link" title="Shopee">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#EE4D2D" />
-                                <path
-                                    d="M20 11C15.03 11 11 15.03 11 20C11 24.97 15.03 29 20 29C24.97 29 29 24.97 29 20C29 15.03 24.97 11 20 11ZM23.5 24.5H16.5C16.22 24.5 16 24.28 16 24V20.5C16 20.22 16.22 20 16.5 20H17.5V18C17.5 16.62 18.62 15.5 20 15.5C21.38 15.5 22.5 16.62 22.5 18V20H23.5C23.78 20 24 20.22 24 20.5V24C24 24.28 23.78 24.5 23.5 24.5ZM21.5 18C21.5 17.17 20.83 16.5 20 16.5C19.17 16.5 18.5 17.17 18.5 18V20H21.5V18Z"
-                                    fill="white" />
-                            </svg>
+                            <img src="image/svg/Shoppe.png" alt="Shopee" width="40" height="40">
                         </a>
                     </div>
                 </div>
@@ -928,6 +1060,73 @@
                 closeProductOptions();
             }
         }
+
+        // Other Products Slider - Initialize auto-slide for product images
+        function initializeOtherProductSliders() {
+            const sliders = ['slider-bolu', 'slider-kue-basah', 'slider-kue-kering', 'slider-roti'];
+
+            sliders.forEach(sliderId => {
+                const sliderElement = document.getElementById(sliderId);
+                if (!sliderElement) return;
+
+                const slides = sliderElement.querySelectorAll('.product-card-slide');
+                if (slides.length <= 1) return;
+
+                let currentIndex = 0;
+
+                setInterval(() => {
+                    slides[currentIndex].style.opacity = '0';
+
+                    setTimeout(() => {
+                        slides[currentIndex].classList.remove('active');
+                        currentIndex = (currentIndex + 1) % slides.length;
+
+                        slides[currentIndex].classList.add('active');
+                        setTimeout(() => {
+                            slides[currentIndex].style.opacity = '1';
+                        }, 50);
+                    }, 300);
+                }, 3000);
+            });
+        }
+
+        // Navigation for Other Products
+        let otherProductCurrentIndex = 0;
+
+        function changeOtherProductSlide(direction) {
+            const container = document.getElementById('other-products-container');
+            if (!container) return;
+
+            const cards = container.querySelectorAll('.product-card');
+            const containerWidth = container.offsetWidth;
+            const cardWidth = cards[0]?.offsetWidth || 260;
+            const gap = 20;
+            const totalCardWidth = cardWidth + gap;
+
+            otherProductCurrentIndex += direction;
+
+            // Limit scrolling
+            const maxIndex = Math.max(0, cards.length - Math.floor(containerWidth / totalCardWidth));
+            if (otherProductCurrentIndex < 0) otherProductCurrentIndex = 0;
+            if (otherProductCurrentIndex > maxIndex) otherProductCurrentIndex = maxIndex;
+
+            container.scrollTo({
+                left: otherProductCurrentIndex * totalCardWidth,
+                behavior: 'smooth'
+            });
+        }
+
+        // Order via WhatsApp for Other Products
+        function orderViaWhatsApp(productName) {
+            const message = `Halo, saya ingin memesan ${productName}. Mohon informasi lebih lanjut mengenai harga dan ketersediaan.`;
+            const whatsappUrl = `https://wa.me/6285654805329?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Initialize other product sliders when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeOtherProductSliders();
+        });
     </script>
 </body>
 
