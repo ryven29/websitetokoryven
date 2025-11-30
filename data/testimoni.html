@@ -35,7 +35,7 @@
 
     <main class="container" style="padding-top: 24px;">
         <section style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-            <h2 style="margin: 0; color: #8D6E63;">Testimoni Kedai Kyt@</h2>
+            <h2 style="margin: 0; color: #8D6E63;">Testimoni Pelanggan</h2>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div id="currentUser" style="font-size: 14px; color: #555;"></div>
                 <button id="logoutBtn" class="cta-primary" style="padding: 8px 14px;">Logout</button>
@@ -59,8 +59,8 @@
             <h2>🛒 Tambahkan Testimoni</h2>
             <form id="testiForm" class="testi-form-section">
                 <div>
-                    <label>Foto Produk</label>
-                    <input type="file" id="photo" accept="image/*" capture="environment">
+                    <label>Foto (Opsional)</label>
+                    <input type="file" id="photo" accept=".jpg,.jpeg,.png,.webp">
                     <div id="photoUploadArea">
                         <div class="photo-upload-btn" onclick="document.getElementById('photo').click()">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -326,25 +326,72 @@
         // Photo Upload Functions
         function removePhoto() {
             document.getElementById('photo').value = '';
+            document.getElementById('photo').webpData = null;
             document.getElementById('photoUploadArea').style.display = 'block';
             document.getElementById('photoPreviewArea').style.display = 'none';
+        }
+
+        // Convert image to WebP format
+        function convertToWebP(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    // Convert to WebP with 80% quality
+                    canvas.toBlob(function (blob) {
+                        if (blob) {
+                            const webpReader = new FileReader();
+                            webpReader.onload = function (evt) {
+                                callback(evt.target.result, blob.size);
+                            };
+                            webpReader.readAsDataURL(blob);
+                        } else {
+                            showNotificationError("Gagal mengkonversi gambar ke WebP");
+                            callback(null, 0);
+                        }
+                    }, 'image/webp', 0.8);
+                };
+                img.onerror = function () {
+                    showNotificationError("Gagal memuat gambar");
+                    callback(null, 0);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         document.getElementById('photo').addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (file) {
-                if (file.size > 500 * 1024) {
-                    showNotificationError("Ukuran foto terlalu besar! Maksimal 500KB");
-                    this.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function (evt) {
-                    document.getElementById('photoPreview').src = evt.target.result;
+                // Convert to WebP first
+                convertToWebP(file, function (webpDataUrl, webpSize) {
+                    if (!webpDataUrl) {
+                        e.target.value = '';
+                        return;
+                    }
+
+                    // Check size after conversion
+                    if (webpSize > 500 * 1024) {
+                        showNotificationError("Ukuran foto terlalu besar! Maksimal 500KB (setelah konversi WebP)");
+                        e.target.value = '';
+                        return;
+                    }
+
+                    // Show preview
+                    document.getElementById('photoPreview').src = webpDataUrl;
                     document.getElementById('photoUploadArea').style.display = 'none';
                     document.getElementById('photoPreviewArea').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+
+                    // Store WebP data for later use
+                    e.target.webpData = webpDataUrl;
+                });
             }
         });
 
@@ -534,36 +581,22 @@
                     return;
                 }
 
-                function processSave(photoDataUrl) {
-                    const entry = {
-                        photo: photoDataUrl || '',
-                        productType: productType,
-                        productFlavor: productFlavor,
-                        productWeight: productWeight,
-                        rating: rating,
-                        review: review,
-                        userName: user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna'),
-                        userEmailMasked: maskEmail(user.email || ''),
-                        userEmailFull: user.email || '',
-                        createdAt: Date.now()
-                    };
-                    saveTestimonial(entry);
-                }
+                // Use the WebP data if available
+                const photoDataUrl = photoInput.webpData || '';
 
-                const file = photoInput.files && photoInput.files[0];
-                if (file) {
-                    if (file.size > 500 * 1024) {
-                        showNotificationError("Ukuran foto terlalu besar! Maksimal 500KB");
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = function (evt) {
-                        processSave(evt.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    processSave('');
-                }
+                const entry = {
+                    photo: photoDataUrl,
+                    productType: productType,
+                    productFlavor: productFlavor,
+                    productWeight: productWeight,
+                    rating: rating,
+                    review: review,
+                    userName: user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna'),
+                    userEmailMasked: maskEmail(user.email || ''),
+                    userEmailFull: user.email || '',
+                    createdAt: Date.now()
+                };
+                saveTestimonial(entry);
             });
         }
 
@@ -610,6 +643,5 @@
         });
     </script>
 </body>
-
 
 </html>
