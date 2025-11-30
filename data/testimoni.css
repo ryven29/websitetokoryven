@@ -67,6 +67,16 @@
     }
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 .close-testi-modal {
     color: #aaa;
     float: right;
@@ -93,8 +103,6 @@
     color: #8D6E63;
 }
 
-.testi-form-section input[type="file"],
-.testi-form-section input[type="text"],
 .testi-form-section select,
 .testi-form-section textarea {
     width: 100%;
@@ -102,12 +110,8 @@
     border: 2px solid #D4A574;
     border-radius: 8px;
     font-size: 14px;
-    margin-bottom: 15px;
     box-sizing: border-box;
-}
-
-.testi-form-section input[type="file"] {
-    padding: 8px;
+    margin-bottom: 15px;
 }
 
 .testi-form-section textarea {
@@ -115,12 +119,73 @@
     min-height: 100px;
 }
 
-.testi-form-section input:focus,
 .testi-form-section select:focus,
 .testi-form-section textarea:focus {
     outline: none;
     border-color: #8D6E63;
     box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
+}
+
+/* Custom Photo Upload Button */
+.testi-form-section input[type="file"] {
+    display: none;
+}
+
+.photo-upload-btn {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #D4A574;
+    border-radius: 12px;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 15px;
+}
+
+.photo-upload-btn:hover {
+    border-color: #8D6E63;
+    background: #fff;
+    transform: scale(1.05);
+}
+
+.photo-upload-btn svg {
+    width: 40px;
+    height: 40px;
+    fill: #8D6E63;
+}
+
+.photo-preview-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.photo-preview-img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    display: block;
+}
+
+.remove-photo-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ff5252;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .product-category-group {
@@ -134,10 +199,86 @@
     margin-bottom: 0;
 }
 
+/* Star Rating */
+.star-rating {
+    display: flex;
+    gap: 8px;
+    font-size: 36px;
+    margin-bottom: 15px;
+    direction: ltr;
+}
+
+.star {
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.star:hover {
+    transform: scale(1.2);
+}
+
+.star.active {
+    filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.6));
+}
+
 .rating-display {
     display: flex;
     gap: 5px;
     font-size: 20px;
+}
+
+/* Error Notification */
+.error-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 4000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.error-notification.show {
+    display: flex;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.error-notification img {
+    width: 80px;
+    height: 80px;
+}
+
+.error-notification p {
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.error-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3999;
+    display: none;
+}
+
+.error-overlay.show {
+    display: block;
 }
 
 .testi-card {
@@ -283,16 +424,6 @@
 
     to {
         transform: scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
         opacity: 1;
     }
 }

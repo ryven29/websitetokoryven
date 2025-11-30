@@ -59,25 +59,39 @@
             <h2>🛒 Tambahkan Testimoni</h2>
             <form id="testiForm" class="testi-form-section">
                 <div>
-                    <label for="photo">Foto (Opsional)</label>
-                    <input type="file" id="photo" accept="image/*">
+                    <label>Foto (Opsional)</label>
+                    <input type="file" id="photo" accept="image/*" capture="environment">
+                    <div id="photoUploadArea">
+                        <div class="photo-upload-btn" onclick="document.getElementById('photo').click()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="photoPreviewArea" style="display: none;">
+                        <div class="photo-preview-container">
+                            <img id="photoPreview" class="photo-preview-img" src="" alt="Preview">
+                            <button type="button" class="remove-photo-btn" onclick="removePhoto()">&times;</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div>
                     <label>Produk yang Dipesan</label>
                     <div class="product-category-group">
-                        <select id="productType" required>
+                        <select id="productType">
                             <option value="">Pilih Produk</option>
                             <option value="Kripik Usus Kyt@">Kripik Usus Kyt@</option>
                         </select>
-                        <select id="productFlavor" required>
+                        <select id="productFlavor">
                             <option value="">Pilih Rasa</option>
                             <option value="Original">Original</option>
                             <option value="Pedas Cabe-cabean">Pedas Cabe-cabean</option>
                             <option value="Pedas Daun Jeruk">Pedas Daun Jeruk</option>
                             <option value="Asin Daun Jeruk">Asin Daun Jeruk</option>
                         </select>
-                        <select id="productWeight" required>
+                        <select id="productWeight">
                             <option value="">Pilih Berat</option>
                             <option value="50 gr">50 gr</option>
                             <option value="100 gr">100 gr</option>
@@ -89,19 +103,19 @@
                 </div>
 
                 <div>
-                    <label for="rating">Rating</label>
-                    <select id="rating" required>
-                        <option value="">Pilih rating</option>
-                        <option value="5">5 - Luar Biasa</option>
-                        <option value="4">4 - Bagus</option>
-                        <option value="3">3 - Cukup</option>
-                        <option value="2">2 - Kurang</option>
-                        <option value="1">1 - Buruk</option>
-                    </select>
+                    <label>Rating</label>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-rating="1">☆</span>
+                        <span class="star" data-rating="2">☆</span>
+                        <span class="star" data-rating="3">☆</span>
+                        <span class="star" data-rating="4">☆</span>
+                        <span class="star" data-rating="5">☆</span>
+                    </div>
+                    <input type="hidden" id="rating" value="">
                 </div>
                 <div>
                     <label for="review">Ulasan</label>
-                    <textarea id="review" rows="4" placeholder="Tulis ulasan Anda..." required></textarea>
+                    <textarea id="review" rows="4" placeholder="Tulis ulasan Anda..."></textarea>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" onclick="toggleModal()">Batal</button>
@@ -115,6 +129,13 @@
     <div id="photoPreviewModal" class="photo-preview-modal" onclick="closePhotoPreview()">
         <span class="close-preview" onclick="closePhotoPreview()">&times;</span>
         <img id="photoPreviewImage" class="photo-preview-content" src="" alt="Preview">
+    </div>
+
+    <!-- Error Notification -->
+    <div class="error-overlay" id="errorOverlay" onclick="closeErrorNotification()"></div>
+    <div class="error-notification" id="errorNotification">
+        <img src="../image/gif/declined.gif" alt="Error">
+        <p id="errorMessage"></p>
     </div>
 
     <!-- Footer -->
@@ -195,6 +216,7 @@
         }
 
         const ADMIN_EMAIL = "fikrinrirham@gmail.com";
+        let selectedRating = 0;
 
         function maskEmail(email) {
             const [name, domain] = email.split('@');
@@ -239,6 +261,120 @@
             el.innerHTML = displayName + ' (' + emailMasked + ')' + adminBadge;
         }
 
+        // Star Rating Functions
+        function initStarRating() {
+            const stars = document.querySelectorAll('.star');
+            const ratingInput = document.getElementById('rating');
+
+            stars.forEach((star, index) => {
+                // Click event
+                star.addEventListener('click', function () {
+                    selectedRating = parseInt(this.getAttribute('data-rating'));
+                    ratingInput.value = selectedRating;
+                    updateStars(selectedRating);
+                });
+
+                // Hover event
+                star.addEventListener('mouseenter', function () {
+                    const hoverRating = parseInt(this.getAttribute('data-rating'));
+                    updateStars(hoverRating);
+                });
+
+                // Mouse leave - return to selected
+                star.addEventListener('mouseleave', function () {
+                    updateStars(selectedRating);
+                });
+            });
+
+            // Touch swipe for mobile
+            let startX = 0;
+            const starRating = document.getElementById('starRating');
+
+            starRating.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+            });
+
+            starRating.addEventListener('touchmove', function (e) {
+                const touch = e.touches[0];
+                const rect = starRating.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const starWidth = rect.width / 5;
+                const rating = Math.ceil(x / starWidth);
+                if (rating >= 1 && rating <= 5) {
+                    updateStars(rating);
+                }
+            });
+
+            starRating.addEventListener('touchend', function (e) {
+                const rect = starRating.getBoundingClientRect();
+                const x = e.changedTouches[0].clientX - rect.left;
+                const starWidth = rect.width / 5;
+                selectedRating = Math.max(1, Math.min(5, Math.ceil(x / starWidth)));
+                ratingInput.value = selectedRating;
+                updateStars(selectedRating);
+            });
+        }
+
+        function updateStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.textContent = '★';
+                    star.classList.add('active');
+                } else {
+                    star.textContent = '☆';
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Photo Upload Functions
+        function removePhoto() {
+            document.getElementById('photo').value = '';
+            document.getElementById('photoUploadArea').style.display = 'block';
+            document.getElementById('photoPreviewArea').style.display = 'none';
+        }
+
+        document.getElementById('photo').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 500 * 1024) {
+                    showErrorNotification("Ukuran foto terlalu besar! Maksimal 500KB");
+                    this.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    document.getElementById('photoPreview').src = evt.target.result;
+                    document.getElementById('photoUploadArea').style.display = 'none';
+                    document.getElementById('photoPreviewArea').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Error Notification Functions
+        function showErrorNotification(message) {
+            const overlay = document.getElementById('errorOverlay');
+            const notification = document.getElementById('errorNotification');
+            const messageEl = document.getElementById('errorMessage');
+
+            messageEl.textContent = message;
+            overlay.classList.add('show');
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                closeErrorNotification();
+            }, 3000);
+        }
+
+        function closeErrorNotification() {
+            const overlay = document.getElementById('errorOverlay');
+            const notification = document.getElementById('errorNotification');
+            overlay.classList.remove('show');
+            notification.classList.remove('show');
+        }
+
         // Photo Preview Functions
         function openPhotoPreview(photoUrl) {
             const modal = document.getElementById('photoPreviewModal');
@@ -275,26 +411,29 @@
                     callback(items);
                 }, (error) => {
                     console.error("Error getting documents: ", error);
-                    alert("Gagal memuat data testimoni. Pastikan konfigurasi Firebase benar.");
+                    showErrorNotification("Gagal memuat data testimoni!");
                 });
         }
 
         // Menyimpan testimoni ke Firestore
         function saveTestimonial(entry) {
             if (!db) {
-                alert("Database belum terhubung. Harap konfigurasi Firebase.");
+                showErrorNotification("Database belum terhubung!");
                 return;
             }
 
             db.collection("testimonials").add(entry)
                 .then(() => {
                     document.getElementById('testiForm').reset();
+                    selectedRating = 0;
+                    updateStars(0);
+                    removePhoto();
                     toggleModal();
                     showNotification('Testimoni berhasil ditambahkan!');
                 })
                 .catch((error) => {
                     console.error("Error adding document: ", error);
-                    alert("Gagal mengirim testimoni: " + error.message);
+                    showErrorNotification("Gagal mengirim testimoni!");
                 });
         }
 
@@ -308,7 +447,7 @@
                 showNotification('Testimoni berhasil dihapus.');
             }).catch((error) => {
                 console.error("Error removing document: ", error);
-                alert("Gagal menghapus: " + error.message);
+                showErrorNotification("Gagal menghapus testimoni!");
             });
         };
 
@@ -379,8 +518,18 @@
                 const rating = parseInt(ratingInput.value, 10);
                 const review = (reviewInput.value || '').trim();
 
-                if (!productType || !productFlavor || !productWeight || !rating || !review) {
-                    alert('Mohon isi semua field yang diperlukan.');
+                if (!productType || !productFlavor || !productWeight) {
+                    showErrorNotification('Harap pilih opsi di kolom produk yang dipesan!');
+                    return;
+                }
+
+                if (!rating || rating < 1 || rating > 5) {
+                    showErrorNotification('Harap pilih rating bintang!');
+                    return;
+                }
+
+                if (!review) {
+                    showErrorNotification('Harap isi ulasan Anda!');
                     return;
                 }
 
@@ -403,7 +552,7 @@
                 const file = photoInput.files && photoInput.files[0];
                 if (file) {
                     if (file.size > 500 * 1024) {
-                        alert("Ukuran foto terlalu besar (Maks 500KB)");
+                        showErrorNotification("Ukuran foto terlalu besar! Maksimal 500KB");
                         return;
                     }
                     const reader = new FileReader();
@@ -454,6 +603,7 @@
             renderUser(user);
             loadTestimonials(renderTestimonials);
             handleForm(user);
+            initStarRating();
 
             document.getElementById('logoutBtn').addEventListener('click', function () {
                 localStorage.removeItem('authUser');
@@ -462,6 +612,5 @@
         });
     </script>
 </body>
-
 
 </html>
