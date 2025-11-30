@@ -1,642 +1,318 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimoni - Kedai Kyt@</title>
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        .add-testi-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
-            color: white;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(141, 110, 99, 0.4);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-
-        .add-testi-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(141, 110, 99, 0.6);
-        }
-
-        /* Modal Styles for Testimoni Form */
-        .testi-modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.3s;
-        }
-
-        .testi-modal.show {
-            display: block;
-        }
-
-        .testi-modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .close-testi-modal {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .close-testi-modal:hover {
-            color: #8D6E63;
-        }
-
-        .testi-modal-content h2 {
-            color: #8D6E63;
-            margin-bottom: 20px;
-            margin-top: 0;
-        }
-
-        .testi-form-section label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #8D6E63;
-        }
-
-        .testi-form-section input[type="file"],
-        .testi-form-section input[type="text"],
-        .testi-form-section select,
-        .testi-form-section textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #D4A574;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-
-        .testi-form-section input[type="file"] {
-            padding: 8px;
-        }
-
-        .testi-form-section textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .testi-form-section input:focus,
-        .testi-form-section select:focus,
-        .testi-form-section textarea:focus {
-            outline: none;
-            border-color: #8D6E63;
-            box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
-        }
-
-        .flavor-checkbox-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .flavor-checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px;
-            border: 2px solid #D4A574;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .flavor-checkbox-item:hover {
-            border-color: #8D6E63;
-            background: #f5f5dc;
-        }
-
-        .flavor-checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #8D6E63;
-        }
-
-        .flavor-checkbox-item label {
-            cursor: pointer;
-            margin: 0;
-            font-weight: 500;
-            color: #5D4037;
-            flex: 1;
-        }
-
-        .flavor-checkbox-item input[type="checkbox"]:checked+label {
-            color: #8D6E63;
-            font-weight: 600;
-        }
-
-        .product-category-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .product-category-group select {
-            margin-bottom: 0;
-        }
-
-        .rating-display {
-            display: flex;
-            gap: 5px;
-            font-size: 20px;
-        }
-
-        .testi-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            padding: 16px;
-            transition: transform 0.3s;
-        }
-
-        .testi-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .testi-photo {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        .testi-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .testi-name {
-            font-weight: 600;
-            color: #8D6E63;
-            font-size: 1.1em;
-        }
-
-        .testi-email {
-            font-size: 12px;
-            color: #777;
-            margin-bottom: 8px;
-        }
-
-        .testi-product-info {
-            background: #f5f5dc;
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: #5D4037;
-            border-left: 3px solid #8D6E63;
-        }
-
-        .testi-review {
-            margin-top: 12px;
-            color: #555;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .form-actions button {
-            flex: 1;
-        }
-
-        .btn-cancel {
-            background: #e0e0e0;
-            color: #333;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .btn-cancel:hover {
-            background: #d0d0d0;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(141, 110, 99, 0.3);
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(141, 110, 99, 0.4);
-        }
-    </style>
-</head>
-
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-section">
-                    <img src="../image/logo.png" alt="Logo Kripik Usus Kyt@" class="logo">
-                    <div class="brand-info">
-                        <h1>Kedai Kyt@</h1>
-                        <p class="tagline">Rasa Nikmat, Harga Berkualitas</p>
-                    </div>
-                </div>
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="../index.html#home" class="nav-link">Home</a></li>
-                        <li><a href="../index.html#produk" class="nav-link">Produk</a></li>
-                        <li><a href="testimoni.html" class="nav-link active">Testimoni</a></li>
-                        <li><a href="../index.html#hubungi" class="nav-link">Hubungi Kami</a></li>
-                    </ul>
-                </nav>
+<div class="container">
+    <div class="header-content">
+        <div class="logo-section">
+            <img src="../image/logo.png" alt="Logo Kripik Usus Kyt@" class="logo">
+            <div class="brand-info">
+                <h1>Kedai Kyt@</h1>
+                <p class="tagline">Rasa Nikmat, Harga Berkualitas</p>
             </div>
         </div>
-    </header>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="../index.html#home" class="nav-link">Home</a></li>
+                <li><a href="../index.html#produk" class="nav-link">Produk</a></li>
+                <li><a href="testimoni.html" class="nav-link active">Testimoni</a></li>
+                <li><a href="../index.html#hubungi" class="nav-link">Hubungi Kami</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</header>
 
-    <main class="container" style="padding-top: 24px;">
-        <section style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-            <h2 style="margin: 0; color: #8D6E63;">Testimoni Pelanggan</h2>
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div id="currentUser" style="font-size: 14px; color: #555;"></div>
-                <button id="logoutBtn" class="cta-primary" style="padding: 8px 14px;">Logout</button>
+<main class="container" style="padding-top: 24px;">
+    <section style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <h2 style="margin: 0; color: #8D6E63;">Testimoni Pelanggan</h2>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="currentUser" style="font-size: 14px; color: #555;"></div>
+            <button id="logoutBtn" class="cta-primary" style="padding: 8px 14px;">Logout</button>
+        </div>
+    </section>
+
+    <section style="margin-top: 24px;">
+        <h3 style="color: #8D6E63;">Semua Testimoni</h3>
+        <div id="testiList"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
+    </section>
+</main>
+
+<!-- Floating Add Button -->
+<button class="add-testi-btn" onclick="toggleModal()" title="Tambah Testimoni">+</button>
+
+<!-- Testimoni Modal -->
+<div id="testiModal" class="testi-modal">
+    <div class="testi-modal-content">
+        <span class="close-testi-modal" onclick="toggleModal()">&times;</span>
+        <h2>🛒 Tambahkan Testimoni</h2>
+        <form id="testiForm" class="testi-form-section">
+            <div>
+                <label for="photo">Foto (Opsional)</label>
+                <input type="file" id="photo" accept="image/*">
             </div>
-        </section>
 
-        <section style="margin-top: 24px;">
-            <h3 style="color: #8D6E63;">Semua Testimoni</h3>
-            <div id="testiList"
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;"></div>
-        </section>
-    </main>
-
-    <!-- Floating Add Button -->
-    <button class="add-testi-btn" onclick="toggleModal()" title="Tambah Testimoni">+</button>
-
-    <!-- Testimoni Modal -->
-    <div id="testiModal" class="testi-modal">
-        <div class="testi-modal-content">
-            <span class="close-testi-modal" onclick="toggleModal()">&times;</span>
-            <h2>🛒 Tambahkan Testimoni</h2>
-            <form id="testiForm" class="testi-form-section">
-                <div>
-                    <label for="photo">Foto (Opsional)</label>
-                    <input type="file" id="photo" accept="image/*">
-                </div>
-
-                <div>
-                    <label>Produk yang Dipesan</label>
-                    <div class="product-category-group">
-                        <select id="productType" required onchange="handleProductTypeChange()">
-                            <option value="">Pilih Produk</option>
-                            <option value="Kripik Usus Kyt@">Kripik Usus Kyt@</option>
-                            <option value="Bolu">Bolu</option>
-                            <option value="Donat">Donat</option>
-                            <option value="Kue Basah">Kue Basah</option>
-                            <option value="Kue Kering">Kue Kering</option>
-                            <option value="Roti">Roti</option>
-                        </select>
-                        <select id="productWeight" required>
-                            <option value="">Pilih Berat</option>
-                            <option value="50 gr">50 gr</option>
-                            <option value="100 gr">100 gr</option>
-                            <option value="250 gr">250 gr</option>
-                            <option value="500 gr">500 gr</option>
-                            <option value="1 kg">1 kg</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="flavorSection">
-                    <label>Pilih Rasa (bisa lebih dari 1)</label>
-                    <div class="flavor-checkbox-group">
-                        <div class="flavor-checkbox-item">
-                            <input type="checkbox" id="flavor1" name="productFlavor" value="Original">
-                            <label for="flavor1">Original</label>
-                        </div>
-                        <div class="flavor-checkbox-item">
-                            <input type="checkbox" id="flavor2" name="productFlavor" value="Pedas Cabe-cabean">
-                            <label for="flavor2">Pedas Cabe-cabean</label>
-                        </div>
-                        <div class="flavor-checkbox-item">
-                            <input type="checkbox" id="flavor3" name="productFlavor" value="Pedas Daun Jeruk">
-                            <label for="flavor3">Pedas Daun Jeruk</label>
-                        </div>
-                        <div class="flavor-checkbox-item">
-                            <input type="checkbox" id="flavor4" name="productFlavor" value="Asin Daun Jeruk">
-                            <label for="flavor4">Asin Daun Jeruk</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <label for="rating">Rating</label>
-                    <select id="rating" required>
-                        <option value="">Pilih rating</option>
-                        <option value="5">5 - Luar Biasa</option>
-                        <option value="4">4 - Bagus</option>
-                        <option value="3">3 - Cukup</option>
-                        <option value="2">2 - Kurang</option>
-                        <option value="1">1 - Buruk</option>
+            <div>
+                <label>Produk yang Dipesan</label>
+                <div class="product-category-group">
+                    <select id="productType" required>
+                        <option value="">Pilih Produk</option>
+                        <option value="Kripik Usus Kyt@">Kripik Usus Kyt@</option>
+                    </select>
+                    <select id="productFlavor" required>
+                        <option value="">Pilih Rasa</option>
+                        <option value="Original">Original</option>
+                        <option value="Pedas Cabe-cabean">Pedas Cabe-cabean</option>
+                        <option value="Pedas Daun Jeruk">Pedas Daun Jeruk</option>
+                        <option value="Asin Daun Jeruk">Asin Daun Jeruk</option>
+                    </select>
+                    <select id="productWeight" required>
+                        <option value="">Pilih Berat</option>
+                        <option value="50 gr">50 gr</option>
+                        <option value="100 gr">100 gr</option>
+                        <option value="250 gr">250 gr</option>
+                        <option value="500 gr">500 gr</option>
+                        <option value="1 kg">1 kg</option>
                     </select>
                 </div>
-                <div>
-                    <label for="review">Ulasan</label>
-                    <textarea id="review" rows="4" placeholder="Tulis ulasan Anda..." required></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="toggleModal()">Batal</button>
-                    <button type="submit" class="btn-submit">Kirim Testimoni</button>
-                </div>
-            </form>
-        </div>
-    </div>
+            </div>
 
-    <!-- Footer -->
-    <footer id="hubungi">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>📞 Kontak Pemilik</h4>
-                    <p>📱 WhatsApp: 0856-5480-5329</p>
-                    <p>📖 Facebook: Lisa Aar</p>
-                    <p>👜 Shopee: Kedaikyta</p>
-                </div>
-                <div class="footer-section">
-                    <h4>📍 Alamat Toko</h4>
-                    <p>Jl. Anggrek</p>
-                    <p>Desa Panggung, Kecamatan Panggung</p>
-                    <p>Kabupaten Tanah Laut, Kalimantan Selatan</p>
-                    <p>Kode Pos: 70815</p>
-                </div>
-                <div class="footer-section">
-                    <h4>🌐 Sosial Media</h4>
-                    <div class="social-links">
-                        <a href="https://wa.me/6285654805329" target="_blank" class="whatsapp-link" title="WhatsApp">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#25D366" />
-                                <path
-                                    d="M28.5 11.4C26.9 9.8 24.8 8.8 22.5 8.3C20.2 7.8 17.8 8 15.7 8.9C13.6 9.8 11.9 11.3 10.8 13.2C9.7 15.1 9.3 17.3 9.6 19.5C9.9 21.7 11 23.7 12.6 25.2L9 31L15 27.5C16.8 28.6 18.9 29.2 21 29.2C23.7 29.2 26.3 28.1 28.2 26.2C30.1 24.3 31.2 21.7 31.2 19C31.2 16.3 30.1 13.7 28.5 11.4ZM25.9 23.5C25.7 24.1 24.6 24.6 24.1 24.7C23.6 24.8 23.1 24.9 21.9 24.4C21.2 24.1 20.3 23.8 19.3 23.2C16.8 21.9 15.2 19.3 15.1 19.1C14.9 18.9 13.6 17.2 13.6 15.5C13.6 13.8 14.5 12.9 14.8 12.6C15.1 12.3 15.4 12.2 15.6 12.2C15.8 12.2 16 12.2 16.2 12.2C16.4 12.2 16.6 12.2 16.8 12.7C17 13.2 17.5 14.9 17.6 15C17.7 15.1 17.7 15.2 17.6 15.4C17.5 15.6 17.4 15.7 17.3 15.9C17.2 16.1 17 16.3 16.9 16.4C16.7 16.6 16.6 16.8 16.7 17C16.8 17.2 17.4 18.2 18.3 19C19.5 20.1 20.5 20.4 20.8 20.6C21.1 20.8 21.2 20.7 21.4 20.5C21.6 20.3 22.1 19.7 22.3 19.4C22.5 19.1 22.7 19.2 23 19.3C23.3 19.4 24.9 20.2 25.2 20.4C25.5 20.6 25.7 20.7 25.8 20.8C25.9 21 25.9 21.5 25.7 22.1Z"
-                                    fill="white" />
-                            </svg>
-                        </a>
-                        <a href="https://web.facebook.com/profile.php?id=61578310350627" target="_blank"
-                            class="facebook-link" title="Facebook">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#1877F2" />
-                                <path
-                                    d="M25.5 12.5H22.5C21.12 12.5 19.5 13.12 19.5 15.5V17.5H16.5V21H19.5V27.5H23V21H26L26.5 17.5H23V15.5C23 14.67 23.67 14 24.5 14H25.5V12.5Z"
-                                    fill="white" />
-                            </svg>
-                        </a>
-                        <a href="https://shopee.co.id/kedaikyta" target="_blank" class="shopee-link" title="Shopee">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="20" fill="#EE4D2D" />
-                                <path
-                                    d="M20 11C15.03 11 11 15.03 11 20C11 24.97 15.03 29 20 29C24.97 29 29 24.97 29 20C29 15.03 24.97 11 20 11ZM23.5 24.5H16.5C16.22 24.5 16 24.28 16 24V20.5C16 20.22 16.22 20 16.5 20H17.5V18C17.5 16.62 18.62 15.5 20 15.5C21.38 15.5 22.5 16.62 22.5 18V20H23.5C23.78 20 24 20.22 24 20.5V24C24 24.28 23.78 24.5 23.5 24.5ZM21.5 18C21.5 17.17 20.83 16.5 20 16.5C19.17 16.5 18.5 17.17 18.5 18V20H21.5V18Z"
-                                    fill="white" />
-                            </svg>
-                        </a>
-                    </div>
+            <div>
+                <label for="rating">Rating</label>
+                <select id="rating" required>
+                    <option value="">Pilih rating</option>
+                    <option value="5">5 - Luar Biasa</option>
+                    <option value="4">4 - Bagus</option>
+                    <option value="3">3 - Cukup</option>
+                    <option value="2">2 - Kurang</option>
+                    <option value="1">1 - Buruk</option>
+                </select>
+            </div>
+            <div>
+                <label for="review">Ulasan</label>
+                <textarea id="review" rows="4" placeholder="Tulis ulasan Anda..." required></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="toggleModal()">Batal</button>
+                <button type="submit" class="btn-submit">Kirim Testimoni</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer id="hubungi">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📞 Kontak Pemilik</h4>
+                <p>📱 WhatsApp: 0856-5480-5329</p>
+                <p>📖 Facebook: Lisa Aar</p>
+                <p>👜 Shopee: Kedaikyta</p>
+            </div>
+            <div class="footer-section">
+                <h4>📍 Alamat Toko</h4>
+                <p>Jl. Anggrek</p>
+                <p>Desa Panggung, Kecamatan Panggung</p>
+                <p>Kabupaten Tanah Laut, Kalimantan Selatan</p>
+                <p>Kode Pos: 70815</p>
+            </div>
+            <div class="footer-section">
+                <h4>🌐 Sosial Media</h4>
+                <div class="social-links">
+                    <a href="https://wa.me/6285654805329" target="_blank" class="whatsapp-link" title="WhatsApp">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="20" fill="#25D366" />
+                            <path
+                                d="M28.5 11.4C26.9 9.8 24.8 8.8 22.5 8.3C20.2 7.8 17.8 8 15.7 8.9C13.6 9.8 11.9 11.3 10.8 13.2C9.7 15.1 9.3 17.3 9.6 19.5C9.9 21.7 11 23.7 12.6 25.2L9 31L15 27.5C16.8 28.6 18.9 29.2 21 29.2C23.7 29.2 26.3 28.1 28.2 26.2C30.1 24.3 31.2 21.7 31.2 19C31.2 16.3 30.1 13.7 28.5 11.4ZM25.9 23.5C25.7 24.1 24.6 24.6 24.1 24.7C23.6 24.8 23.1 24.9 21.9 24.4C21.2 24.1 20.3 23.8 19.3 23.2C16.8 21.9 15.2 19.3 15.1 19.1C14.9 18.9 13.6 17.2 13.6 15.5C13.6 13.8 14.5 12.9 14.8 12.6C15.1 12.3 15.4 12.2 15.6 12.2C15.8 12.2 16 12.2 16.2 12.2C16.4 12.2 16.6 12.2 16.8 12.7C17 13.2 17.5 14.9 17.6 15C17.7 15.1 17.7 15.2 17.6 15.4C17.5 15.6 17.4 15.7 17.3 15.9C17.2 16.1 17 16.3 16.9 16.4C16.7 16.6 16.6 16.8 16.7 17C16.8 17.2 17.4 18.2 18.3 19C19.5 20.1 20.5 20.4 20.8 20.6C21.1 20.8 21.2 20.7 21.4 20.5C21.6 20.3 22.1 19.7 22.3 19.4C22.5 19.1 22.7 19.2 23 19.3C23.3 19.4 24.9 20.2 25.2 20.4C25.5 20.6 25.7 20.7 25.8 20.8C25.9 21 25.9 21.5 25.7 22.1Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <a href="https://web.facebook.com/profile.php?id=61578310350627" target="_blank"
+                        class="facebook-link" title="Facebook">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="20" fill="#1877F2" />
+                            <path
+                                d="M25.5 12.5H22.5C21.12 12.5 19.5 13.12 19.5 15.5V17.5H16.5V21H19.5V27.5H23V21H26L26.5 17.5H23V15.5C23 14.67 23.67 14 24.5 14H25.5V12.5Z"
+                                fill="white" />
+                        </svg>
+                    </a>
+                    <a href="https://shopee.co.id/kedaikyta" target="_blank" class="shopee-link" title="Shopee">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="20" fill="#EE4D2D" />
+                            <path
+                                d="M20 11C15.03 11 11 15.03 11 20C11 24.97 15.03 29 20 29C24.97 29 29 24.97 29 20C29 15.03 24.97 11 20 11ZM23.5 24.5H16.5C16.22 24.5 16 24.28 16 24V20.5C16 20.22 16.22 20 16.5 20H17.5V18C17.5 16.62 18.62 15.5 20 15.5C21.38 15.5 22.5 16.62 22.5 18V20H23.5C23.78 20 24 20.22 24 20.5V24C24 24.28 23.78 24.5 23.5 24.5ZM21.5 18C21.5 17.17 20.83 16.5 20 16.5C19.17 16.5 18.5 17.17 18.5 18V20H21.5V18Z"
+                                fill="white" />
+                        </svg>
+                    </a>
                 </div>
             </div>
-            <p class="copyright">&copy; 2025 Kripik Usus Kyt@. All Rights Reserved.</p>
         </div>
-    </footer>
+        <p class="copyright">&copy; 2025 Kripik Usus Kyt@. All Rights Reserved.</p>
+    </div>
+</footer>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    <script>
-        // KONFIGURASI FIREBASE
-        const firebaseConfig = {
-            apiKey: "AIzaSyBDpIvHvCHt034l5Cat3MIm5imEL3C03sQ",
-            authDomain: "kedaikyta-6a584.firebaseapp.com",
-            projectId: "kedaikyta-6a584",
-            storageBucket: "kedaikyta-6a584.firebasestorage.app",
-            messagingSenderId: "230683871860",
-            appId: "1:230683871860:web:72233a79f6fd05e68f9f21",
-            measurementId: "G-1HWLV1203F"
-        };
+<script>
+    // KONFIGURASI FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyBDpIvHvCHt034l5Cat3MIm5imEL3C03sQ",
+        authDomain: "kedaikyta-6a584.firebaseapp.com",
+        projectId: "kedaikyta-6a584",
+        storageBucket: "kedaikyta-6a584.firebasestorage.app",
+        messagingSenderId: "230683871860",
+        appId: "1:230683871860:web:72233a79f6fd05e68f9f21",
+        measurementId: "G-1HWLV1203F"
+    };
 
-        // Inisialisasi Firebase
-        let db;
+    // Inisialisasi Firebase
+    let db;
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+    } catch (e) {
+        console.error("Firebase Error:", e);
+    }
+
+    const ADMIN_EMAIL = "fikrinrirham@gmail.com";
+
+    function maskEmail(email) {
+        const [name, domain] = email.split('@');
+        if (!name || !domain) return email;
+        const visible = Math.min(2, name.length);
+        const masked = name.slice(0, visible) + '*'.repeat(Math.max(1, name.length - visible));
+        const domainParts = domain.split('.');
+        const dName = domainParts[0] || '';
+        const dTld = domainParts.slice(1).join('.') || '';
+        const dVisible = Math.min(1, dName.length);
+        const dMasked = (dName.slice(0, dVisible) + '*'.repeat(Math.max(1, dName.length - dVisible))) + (dTld ? '.' + dTld : '');
+        return masked + '@' + dMasked;
+    }
+
+    function requireAuth() {
+        const userStr = localStorage.getItem('authUser');
+        if (!userStr) {
+            sessionStorage.setItem('nextAfterLogin', 'data/testimoni.html');
+            window.location.href = '../login.html';
+            return null;
+        }
         try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
+            return JSON.parse(userStr);
         } catch (e) {
-            console.error("Firebase Error:", e);
+            localStorage.removeItem('authUser');
+            window.location.href = '../login.html';
+            return null;
+        }
+    }
+
+    function renderUser(user) {
+        const el = document.getElementById('currentUser');
+        if (!el) return;
+        const emailMasked = maskEmail(user.email || '');
+        const displayName = user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna');
+
+        let adminBadge = '';
+        if (user.email === ADMIN_EMAIL) {
+            adminBadge = ' <span style="background:#8D6E63; color:white; padding:2px 6px; border-radius:4px; font-size:10px;">ADMIN</span>';
         }
 
-        const ADMIN_EMAIL = "fikrinrirham@gmail.com";
+        el.innerHTML = displayName + ' (' + emailMasked + ')' + adminBadge;
+    }
 
-        function maskEmail(email) {
-            const [name, domain] = email.split('@');
-            if (!name || !domain) return email;
-            const visible = Math.min(2, name.length);
-            const masked = name.slice(0, visible) + '*'.repeat(Math.max(1, name.length - visible));
-            const domainParts = domain.split('.');
-            const dName = domainParts[0] || '';
-            const dTld = domainParts.slice(1).join('.') || '';
-            const dVisible = Math.min(1, dName.length);
-            const dMasked = (dName.slice(0, dVisible) + '*'.repeat(Math.max(1, dName.length - dVisible))) + (dTld ? '.' + dTld : '');
-            return masked + '@' + dMasked;
-        }
-
-        function requireAuth() {
-            const userStr = localStorage.getItem('authUser');
-            if (!userStr) {
-                sessionStorage.setItem('nextAfterLogin', 'data/testimoni.html');
-                window.location.href = '../login.html';
-                return null;
-            }
+    // Mengambil testimoni dari Firestore
+    function loadTestimonials(callback) {
+        if (!db) {
+            console.warn("Menggunakan localStorage karena Firebase belum dikonfigurasi");
             try {
-                return JSON.parse(userStr);
+                const localData = JSON.parse(localStorage.getItem('testimonials') || '[]');
+                callback(localData);
             } catch (e) {
-                localStorage.removeItem('authUser');
-                window.location.href = '../login.html';
-                return null;
+                callback([]);
             }
+            return;
         }
 
-        function renderUser(user) {
-            const el = document.getElementById('currentUser');
-            if (!el) return;
-            const emailMasked = maskEmail(user.email || '');
-            const displayName = user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna');
-
-            let adminBadge = '';
-            if (user.email === ADMIN_EMAIL) {
-                adminBadge = ' <span style="background:#8D6E63; color:white; padding:2px 6px; border-radius:4px; font-size:10px;">ADMIN</span>';
-            }
-
-            el.innerHTML = displayName + ' (' + emailMasked + ')' + adminBadge;
-        }
-
-        // Mengambil testimoni dari Firestore
-        function loadTestimonials(callback) {
-            if (!db) {
-                console.warn("Menggunakan localStorage karena Firebase belum dikonfigurasi");
-                try {
-                    const localData = JSON.parse(localStorage.getItem('testimonials') || '[]');
-                    callback(localData);
-                } catch (e) {
-                    callback([]);
-                }
-                return;
-            }
-
-            db.collection("testimonials")
-                .orderBy("createdAt", "desc")
-                .onSnapshot((snapshot) => {
-                    const items = [];
-                    snapshot.forEach((doc) => {
-                        items.push({ id: doc.id, ...doc.data() });
-                    });
-                    callback(items);
-                }, (error) => {
-                    console.error("Error getting documents: ", error);
-                    alert("Gagal memuat data testimoni. Pastikan konfigurasi Firebase benar.");
+        db.collection("testimonials")
+            .orderBy("createdAt", "desc")
+            .onSnapshot((snapshot) => {
+                const items = [];
+                snapshot.forEach((doc) => {
+                    items.push({ id: doc.id, ...doc.data() });
                 });
-        }
-
-        // Menyimpan testimoni ke Firestore
-        function saveTestimonial(entry) {
-            if (!db) {
-                alert("Database belum terhubung. Harap konfigurasi Firebase.");
-                return;
-            }
-
-            db.collection("testimonials").add(entry)
-                .then(() => {
-                    document.getElementById('testiForm').reset();
-                    toggleModal();
-                    showNotification('Testimoni berhasil ditambahkan!');
-                })
-                .catch((error) => {
-                    console.error("Error adding document: ", error);
-                    alert("Gagal mengirim testimoni: " + error.message);
-                });
-        }
-
-        // Menghapus testimoni (Hanya Admin)
-        window.deleteTestimonial = function (id) {
-            if (!confirm("Apakah Anda yakin ingin menghapus testimoni ini?")) return;
-
-            if (!db) return;
-
-            db.collection("testimonials").doc(id).delete().then(() => {
-                showNotification('Testimoni berhasil dihapus.');
-            }).catch((error) => {
-                console.error("Error removing document: ", error);
-                alert("Gagal menghapus: " + error.message);
+                callback(items);
+            }, (error) => {
+                console.error("Error getting documents: ", error);
+                alert("Gagal memuat data testimoni. Pastikan konfigurasi Firebase benar.");
             });
-        };
+    }
 
-        function toggleModal() {
-            const modal = document.getElementById('testiModal');
-            modal.classList.toggle('show');
+    // Menyimpan testimoni ke Firestore
+    function saveTestimonial(entry) {
+        if (!db) {
+            alert("Database belum terhubung. Harap konfigurasi Firebase.");
+            return;
         }
 
-        function renderTestimonials(items) {
-            const list = document.getElementById('testiList');
-            const user = requireAuth();
-            const isAdmin = user && user.email === ADMIN_EMAIL;
+        db.collection("testimonials").add(entry)
+            .then(() => {
+                document.getElementById('testiForm').reset();
+                toggleModal();
+                showNotification('Testimoni berhasil ditambahkan!');
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+                alert("Gagal mengirim testimoni: " + error.message);
+            });
+    }
 
-            if (!items.length) {
-                list.innerHTML = '<p style="color:#555; grid-column: 1/-1;">Belum ada testimoni. Jadilah yang pertama!</p>';
-                return;
+    // Menghapus testimoni (Hanya Admin)
+    window.deleteTestimonial = function (id) {
+        if (!confirm("Apakah Anda yakin ingin menghapus testimoni ini?")) return;
+
+        if (!db) return;
+
+        db.collection("testimonials").doc(id).delete().then(() => {
+            showNotification('Testimoni berhasil dihapus.');
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+            alert("Gagal menghapus: " + error.message);
+        });
+    };
+
+    function toggleModal() {
+        const modal = document.getElementById('testiModal');
+        modal.classList.toggle('show');
+    }
+
+    function renderTestimonials(items) {
+        const list = document.getElementById('testiList');
+        const user = requireAuth();
+        const isAdmin = user && user.email === ADMIN_EMAIL;
+
+        if (!items.length) {
+            list.innerHTML = '<p style="color:#555; grid-column: 1/-1;">Belum ada testimoni. Jadilah yang pertama!</p>';
+            return;
+        }
+        list.innerHTML = items.map(it => {
+            const stars = '⭐'.repeat(it.rating);
+            const img = it.photo ? `<img src="${it.photo}" alt="foto testimoni" class="testi-photo">` : '';
+
+            let productInfo = '';
+            if (it.productType || it.productFlavor || it.productWeight) {
+                productInfo = `<div class="testi-product-info">📦 ${it.productType || ''} | ${it.productFlavor || ''} | ${it.productWeight || ''}</div>`;
             }
-            list.innerHTML = items.map(it => {
-                const stars = '⭐'.repeat(it.rating);
-                const img = it.photo ? `<img src="${it.photo}" alt="foto testimoni" class="testi-photo">` : '';
 
-                let productInfo = '';
-                if (it.productType) {
-                    let details = it.productType;
-                    if (it.productFlavor && it.productFlavor !== '-') {
-                        details += ` | ${it.productFlavor}`;
-                    }
-                    if (it.productWeight && it.productWeight !== '-') {
-                        details += ` | ${it.productWeight}`;
-                    }
-                    productInfo = `<div class="testi-product-info">📦 ${details}</div>`;
-                }
-
-                let deleteBtn = '';
-                if (isAdmin) {
-                    deleteBtn = `
+            let deleteBtn = '';
+            if (isAdmin) {
+                deleteBtn = `
                         <button onclick="deleteTestimonial('${it.id}')" 
                                 style="background:#ff5252; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; margin-top:10px; font-size:12px;">
                             Delete
                         </button>
                     `;
-                }
+            }
 
-                return `
+            return `
                     <div class="testi-card">
                         ${img}
                         <div class="testi-header">
@@ -649,153 +325,109 @@
                         ${deleteBtn}
                     </div>
                 `;
-            }).join('');
-        }
+        }).join('');
+    }
 
-        // Handle product type change to show/hide weight and flavor options
-        function handleProductTypeChange() {
-            const productType = document.getElementById('productType').value;
-            const weightSelect = document.getElementById('productWeight');
-            const flavorSection = document.getElementById('flavorSection');
-            const weightSelectParent = weightSelect.parentElement;
+    function handleForm(user) {
+        const form = document.getElementById('testiForm');
+        const photoInput = document.getElementById('photo');
+        const productTypeInput = document.getElementById('productType');
+        const productFlavorInput = document.getElementById('productFlavor');
+        const productWeightInput = document.getElementById('productWeight');
+        const ratingInput = document.getElementById('rating');
+        const reviewInput = document.getElementById('review');
 
-            // Show/hide weight based on product type
-            if (productType === 'Kripik Usus Kyt@') {
-                weightSelectParent.style.display = 'block';
-                weightSelect.required = true;
-                flavorSection.style.display = 'block';
-            } else if (productType) {
-                // For other products, hide weight and flavor
-                weightSelectParent.style.display = 'none';
-                weightSelect.required = false;
-                weightSelect.value = ''; // Clear selection
-                flavorSection.style.display = 'none';
-                // Uncheck all flavor checkboxes
-                document.querySelectorAll('input[name="productFlavor"]').forEach(cb => cb.checked = false);
-            } else {
-                // No product selected
-                weightSelectParent.style.display = 'block';
-                weightSelect.required = true;
-                flavorSection.style.display = 'block';
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const productType = productTypeInput.value.trim();
+            const productFlavor = productFlavorInput.value.trim();
+            const productWeight = productWeightInput.value.trim();
+            const rating = parseInt(ratingInput.value, 10);
+            const review = (reviewInput.value || '').trim();
+
+            if (!productType || !productFlavor || !productWeight || !rating || !review) {
+                alert('Mohon isi semua field yang diperlukan.');
+                return;
             }
-        }
 
-        function handleForm(user) {
-            const form = document.getElementById('testiForm');
-            const photoInput = document.getElementById('photo');
-            const productTypeInput = document.getElementById('productType');
-            const productWeightInput = document.getElementById('productWeight');
-            const ratingInput = document.getElementById('rating');
-            const reviewInput = document.getElementById('review');
+            function processSave(photoDataUrl) {
+                const entry = {
+                    photo: photoDataUrl || '',
+                    productType: productType,
+                    productFlavor: productFlavor,
+                    productWeight: productWeight,
+                    rating: rating,
+                    review: review,
+                    userName: user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna'),
+                    userEmailMasked: maskEmail(user.email || ''),
+                    userEmailFull: user.email || '',
+                    createdAt: Date.now()
+                };
+                saveTestimonial(entry);
+            }
 
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const productType = productTypeInput.value.trim();
-                const productWeight = productWeightInput.value.trim();
-                const rating = parseInt(ratingInput.value, 10);
-                const review = (reviewInput.value || '').trim();
-
-                // Get selected flavors from checkboxes
-                const flavorCheckboxes = document.querySelectorAll('input[name="productFlavor"]:checked');
-                const selectedFlavors = Array.from(flavorCheckboxes).map(cb => cb.value);
-                const productFlavor = selectedFlavors.join(', ');
-
-                // Validation based on product type
-                if (!productType || !rating || !review) {
-                    alert('Mohon isi semua field yang diperlukan.');
+            const file = photoInput.files && photoInput.files[0];
+            if (file) {
+                if (file.size > 500 * 1024) {
+                    alert("Ukuran foto terlalu besar (Maks 500KB)");
                     return;
                 }
-
-                // For Kripik Usus, require flavor and weight
-                if (productType === 'Kripik Usus Kyt@') {
-                    if (selectedFlavors.length === 0) {
-                        alert('Mohon pilih minimal 1 rasa untuk Kripik Usus.');
-                        return;
-                    }
-                    if (!productWeight) {
-                        alert('Mohon pilih berat untuk Kripik Usus.');
-                        return;
-                    }
-                }
-
-                function processSave(photoDataUrl) {
-                    const entry = {
-                        photo: photoDataUrl || '',
-                        productType: productType,
-                        productFlavor: productFlavor || '-',
-                        productWeight: productWeight || '-',
-                        rating: rating,
-                        review: review,
-                        userName: user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna'),
-                        userEmailMasked: maskEmail(user.email || ''),
-                        userEmailFull: user.email || '',
-                        createdAt: Date.now()
-                    };
-                    saveTestimonial(entry);
-                }
-
-                const file = photoInput.files && photoInput.files[0];
-                if (file) {
-                    if (file.size > 500 * 1024) {
-                        alert("Ukuran foto terlalu besar (Maks 500KB)");
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = function (evt) {
-                        processSave(evt.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    processSave('');
-                }
-            });
-        }
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-
-            // Create icon element
-            const icon = document.createElement('img');
-            icon.src = '../image/gif/tick.gif';
-            icon.alt = 'Success';
-            icon.className = 'notification-icon';
-
-            // Create text element
-            const text = document.createElement('span');
-            text.textContent = message;
-
-            // Append icon and text to notification
-            notification.appendChild(icon);
-            notification.appendChild(text);
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 2000);
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const user = requireAuth();
-            if (!user) return;
-
-            renderUser(user);
-            loadTestimonials(renderTestimonials);
-            handleForm(user);
-
-            document.getElementById('logoutBtn').addEventListener('click', function () {
-                localStorage.removeItem('authUser');
-                window.location.href = '../login.html';
-            });
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    processSave(evt.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                processSave('');
+            }
         });
-    </script>
+    }
+
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+
+        // Create icon element
+        const icon = document.createElement('img');
+        icon.src = '../image/gif/tick.gif';
+        icon.alt = 'Success';
+        icon.className = 'notification-icon';
+
+        // Create text element
+        const text = document.createElement('span');
+        text.textContent = message;
+
+        // Append icon and text to notification
+        notification.appendChild(icon);
+        notification.appendChild(text);
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const user = requireAuth();
+        if (!user) return;
+
+        renderUser(user);
+        loadTestimonials(renderTestimonials);
+        handleForm(user);
+
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            localStorage.removeItem('authUser');
+            window.location.href = '../login.html';
+        });
+    });
+</script>
 </body>
 
 
