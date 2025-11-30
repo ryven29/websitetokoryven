@@ -111,6 +111,12 @@
         </div>
     </div>
 
+    <!-- Photo Preview Modal -->
+    <div id="photoPreviewModal" class="photo-preview-modal" onclick="closePhotoPreview()">
+        <span class="close-preview" onclick="closePhotoPreview()">&times;</span>
+        <img id="photoPreviewImage" class="photo-preview-content" src="" alt="Preview">
+    </div>
+
     <!-- Footer -->
     <footer id="hubungi">
         <div class="container">
@@ -233,6 +239,19 @@
             el.innerHTML = displayName + ' (' + emailMasked + ')' + adminBadge;
         }
 
+        // Photo Preview Functions
+        function openPhotoPreview(photoUrl) {
+            const modal = document.getElementById('photoPreviewModal');
+            const img = document.getElementById('photoPreviewImage');
+            img.src = photoUrl;
+            modal.classList.add('show');
+        }
+
+        function closePhotoPreview() {
+            const modal = document.getElementById('photoPreviewModal');
+            modal.classList.remove('show');
+        }
+
         // Mengambil testimoni dari Firestore
         function loadTestimonials(callback) {
             if (!db) {
@@ -309,7 +328,7 @@
             }
             list.innerHTML = items.map(it => {
                 const stars = '⭐'.repeat(it.rating);
-                const img = it.photo ? `<img src="${it.photo}" alt="foto testimoni" class="testi-photo">` : '';
+                const img = it.photo ? `<img src="${it.photo}" alt="foto testimoni" class="testi-photo" onclick="openPhotoPreview('${it.photo}')">` : '';
 
                 let productInfo = '';
                 if (it.productType || it.productFlavor || it.productWeight) {
