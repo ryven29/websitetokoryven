@@ -130,9 +130,53 @@
             box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
         }
 
+        .flavor-checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .flavor-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            border: 2px solid #D4A574;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .flavor-checkbox-item:hover {
+            border-color: #8D6E63;
+            background: #f5f5dc;
+        }
+
+        .flavor-checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #8D6E63;
+        }
+
+        .flavor-checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 500;
+            color: #5D4037;
+            flex: 1;
+        }
+
+        .flavor-checkbox-item input[type="checkbox"]:checked+label {
+            color: #8D6E63;
+            font-weight: 600;
+        }
+
         .product-category-group {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 15px;
         }
@@ -305,16 +349,14 @@
                 <div>
                     <label>Produk yang Dipesan</label>
                     <div class="product-category-group">
-                        <select id="productType" required>
+                        <select id="productType" required onchange="handleProductTypeChange()">
                             <option value="">Pilih Produk</option>
                             <option value="Kripik Usus Kyt@">Kripik Usus Kyt@</option>
-                        </select>
-                        <select id="productFlavor" required>
-                            <option value="">Pilih Rasa</option>
-                            <option value="Original">Original</option>
-                            <option value="Pedas Cabe-cabean">Pedas Cabe-cabean</option>
-                            <option value="Pedas Daun Jeruk">Pedas Daun Jeruk</option>
-                            <option value="Asin Daun Jeruk">Asin Daun Jeruk</option>
+                            <option value="Bolu">Bolu</option>
+                            <option value="Donat">Donat</option>
+                            <option value="Kue Basah">Kue Basah</option>
+                            <option value="Kue Kering">Kue Kering</option>
+                            <option value="Roti">Roti</option>
                         </select>
                         <select id="productWeight" required>
                             <option value="">Pilih Berat</option>
@@ -324,6 +366,28 @@
                             <option value="500 gr">500 gr</option>
                             <option value="1 kg">1 kg</option>
                         </select>
+                    </div>
+                </div>
+
+                <div id="flavorSection">
+                    <label>Pilih Rasa (bisa lebih dari 1)</label>
+                    <div class="flavor-checkbox-group">
+                        <div class="flavor-checkbox-item">
+                            <input type="checkbox" id="flavor1" name="productFlavor" value="Original">
+                            <label for="flavor1">Original</label>
+                        </div>
+                        <div class="flavor-checkbox-item">
+                            <input type="checkbox" id="flavor2" name="productFlavor" value="Pedas Cabe-cabean">
+                            <label for="flavor2">Pedas Cabe-cabean</label>
+                        </div>
+                        <div class="flavor-checkbox-item">
+                            <input type="checkbox" id="flavor3" name="productFlavor" value="Pedas Daun Jeruk">
+                            <label for="flavor3">Pedas Daun Jeruk</label>
+                        </div>
+                        <div class="flavor-checkbox-item">
+                            <input type="checkbox" id="flavor4" name="productFlavor" value="Asin Daun Jeruk">
+                            <label for="flavor4">Asin Daun Jeruk</label>
+                        </div>
                     </div>
                 </div>
 
@@ -551,8 +615,15 @@
                 const img = it.photo ? `<img src="${it.photo}" alt="foto testimoni" class="testi-photo">` : '';
 
                 let productInfo = '';
-                if (it.productType || it.productFlavor || it.productWeight) {
-                    productInfo = `<div class="testi-product-info">📦 ${it.productType || ''} | ${it.productFlavor || ''} | ${it.productWeight || ''}</div>`;
+                if (it.productType) {
+                    let details = it.productType;
+                    if (it.productFlavor && it.productFlavor !== '-') {
+                        details += ` | ${it.productFlavor}`;
+                    }
+                    if (it.productWeight && it.productWeight !== '-') {
+                        details += ` | ${it.productWeight}`;
+                    }
+                    productInfo = `<div class="testi-product-info">📦 ${details}</div>`;
                 }
 
                 let deleteBtn = '';
@@ -581,11 +652,38 @@
             }).join('');
         }
 
+        // Handle product type change to show/hide weight and flavor options
+        function handleProductTypeChange() {
+            const productType = document.getElementById('productType').value;
+            const weightSelect = document.getElementById('productWeight');
+            const flavorSection = document.getElementById('flavorSection');
+            const weightSelectParent = weightSelect.parentElement;
+
+            // Show/hide weight based on product type
+            if (productType === 'Kripik Usus Kyt@') {
+                weightSelectParent.style.display = 'block';
+                weightSelect.required = true;
+                flavorSection.style.display = 'block';
+            } else if (productType) {
+                // For other products, hide weight and flavor
+                weightSelectParent.style.display = 'none';
+                weightSelect.required = false;
+                weightSelect.value = ''; // Clear selection
+                flavorSection.style.display = 'none';
+                // Uncheck all flavor checkboxes
+                document.querySelectorAll('input[name="productFlavor"]').forEach(cb => cb.checked = false);
+            } else {
+                // No product selected
+                weightSelectParent.style.display = 'block';
+                weightSelect.required = true;
+                flavorSection.style.display = 'block';
+            }
+        }
+
         function handleForm(user) {
             const form = document.getElementById('testiForm');
             const photoInput = document.getElementById('photo');
             const productTypeInput = document.getElementById('productType');
-            const productFlavorInput = document.getElementById('productFlavor');
             const productWeightInput = document.getElementById('productWeight');
             const ratingInput = document.getElementById('rating');
             const reviewInput = document.getElementById('review');
@@ -594,22 +692,39 @@
                 e.preventDefault();
 
                 const productType = productTypeInput.value.trim();
-                const productFlavor = productFlavorInput.value.trim();
                 const productWeight = productWeightInput.value.trim();
                 const rating = parseInt(ratingInput.value, 10);
                 const review = (reviewInput.value || '').trim();
 
-                if (!productType || !productFlavor || !productWeight || !rating || !review) {
+                // Get selected flavors from checkboxes
+                const flavorCheckboxes = document.querySelectorAll('input[name="productFlavor"]:checked');
+                const selectedFlavors = Array.from(flavorCheckboxes).map(cb => cb.value);
+                const productFlavor = selectedFlavors.join(', ');
+
+                // Validation based on product type
+                if (!productType || !rating || !review) {
                     alert('Mohon isi semua field yang diperlukan.');
                     return;
+                }
+
+                // For Kripik Usus, require flavor and weight
+                if (productType === 'Kripik Usus Kyt@') {
+                    if (selectedFlavors.length === 0) {
+                        alert('Mohon pilih minimal 1 rasa untuk Kripik Usus.');
+                        return;
+                    }
+                    if (!productWeight) {
+                        alert('Mohon pilih berat untuk Kripik Usus.');
+                        return;
+                    }
                 }
 
                 function processSave(photoDataUrl) {
                     const entry = {
                         photo: photoDataUrl || '',
                         productType: productType,
-                        productFlavor: productFlavor,
-                        productWeight: productWeight,
+                        productFlavor: productFlavor || '-',
+                        productWeight: productWeight || '-',
                         rating: rating,
                         review: review,
                         userName: user.name || user.nickname || (user.email ? user.email.split('@')[0] : 'Pengguna'),
