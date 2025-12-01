@@ -84,13 +84,6 @@
                             <option value="">Pilih Produk</option>
                             <option value="Kripik Usus Kyt@">Kripik Usus Kyt@</option>
                         </select>
-                        <select id="productFlavor">
-                            <option value="">Pilih Rasa</option>
-                            <option value="Original">Original</option>
-                            <option value="Pedas Cabe-cabean">Pedas Cabe-cabean</option>
-                            <option value="Pedas Daun Jeruk">Pedas Daun Jeruk</option>
-                            <option value="Asin Daun Jeruk">Asin Daun Jeruk</option>
-                        </select>
                         <select id="productWeight">
                             <option value="">Pilih Berat</option>
                             <option value="50 gr">50 gr</option>
@@ -99,6 +92,28 @@
                             <option value="500 gr">500 gr</option>
                             <option value="1 kg">1 kg</option>
                         </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Pilih Rasa (bisa lebih dari 1)</label>
+                    <div class="flavor-checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="productFlavor" value="Original">
+                            <span class="checkbox-label">Original</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="productFlavor" value="Pedas Cabe-cabean">
+                            <span class="checkbox-label">Pedas Cabe-cabean</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="productFlavor" value="Pedas Daun Jeruk">
+                            <span class="checkbox-label">Pedas Daun Jeruk</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="productFlavor" value="Asin Daun Jeruk">
+                            <span class="checkbox-label">Asin Daun Jeruk</span>
+                        </label>
                     </div>
                 </div>
 
@@ -476,6 +491,8 @@
                     selectedRating = 0;
                     updateStars(0);
                     removePhoto();
+                    // Uncheck all flavor checkboxes
+                    document.querySelectorAll('input[name="productFlavor"]').forEach(cb => cb.checked = false);
                     toggleModal();
                     showNotification('Testimoni berhasil ditambahkan!');
                 })
@@ -552,7 +569,6 @@
             const form = document.getElementById('testiForm');
             const photoInput = document.getElementById('photo');
             const productTypeInput = document.getElementById('productType');
-            const productFlavorInput = document.getElementById('productFlavor');
             const productWeightInput = document.getElementById('productWeight');
             const ratingInput = document.getElementById('rating');
             const reviewInput = document.getElementById('review');
@@ -561,13 +577,23 @@
                 e.preventDefault();
 
                 const productType = productTypeInput.value.trim();
-                const productFlavor = productFlavorInput.value.trim();
                 const productWeight = productWeightInput.value.trim();
                 const rating = parseInt(ratingInput.value, 10);
                 const review = (reviewInput.value || '').trim();
 
-                if (!productType || !productFlavor || !productWeight) {
-                    showNotificationError('Harap pilih opsi di kolom produk yang dipesan!');
+                // Get selected flavors from checkboxes
+                const selectedFlavors = [];
+                document.querySelectorAll('input[name="productFlavor"]:checked').forEach(checkbox => {
+                    selectedFlavors.push(checkbox.value);
+                });
+
+                if (!productType || !productWeight) {
+                    showNotificationError('Harap pilih produk dan berat!');
+                    return;
+                }
+
+                if (selectedFlavors.length === 0) {
+                    showNotificationError('Harap pilih minimal 1 rasa!');
                     return;
                 }
 
@@ -583,6 +609,9 @@
 
                 // Use the WebP data if available
                 const photoDataUrl = photoInput.webpData || '';
+
+                // Join selected flavors with comma
+                const productFlavor = selectedFlavors.join(', ');
 
                 const entry = {
                     photo: photoDataUrl,
